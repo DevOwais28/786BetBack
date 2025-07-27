@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const admin_controller_1 = require("../controllers/admin.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const admin_controller_2 = require("../controllers/admin.controller");
+const router = (0, express_1.Router)();
+router.patch('/transactions/:id/approve', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin', 'finance'), admin_controller_1.approveTx);
+router.get('/admin/users', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin'), admin_controller_2.listUsers);
+router.patch('/admin/users/:id', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin'), admin_controller_2.updateUser);
+router.patch('/admin/users/:id/ban', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin'), admin_controller_2.banUser);
+router.post('/admin/users/balance', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('finance'), admin_controller_2.adjustBalance);
+router.patch('/admin/game/settings', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin'), admin_controller_2.gameSettings);
+// router.post('/admin/send-usdt',       authenticate, authorize('finance'), adminSendUSDT);
+router.get('/admin/analytics', auth_middleware_1.authenticate, (0, auth_middleware_1.authorize)('super-admin'), admin_controller_2.analyticsSummary);
+exports.default = router;
